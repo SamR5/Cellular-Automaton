@@ -11,6 +11,7 @@ else:
     import Tkinter as tk
 import itertools as it
 import copy
+import random as r
 
 
 cs = 2 # cell size
@@ -52,6 +53,12 @@ class Automaton():
         self.blankLab = tk.Label(self.master, text='', width=8)\
                         .grid(row=1, column=1)
         
+        self.randSeedB = tk.Button(self.master, text="Random\nseed",
+                                   command=self.rand_seed)
+        self.normalSeedB = tk.Button(self.master, text="Normal\nseed",
+                                     command=self.normal_seed)
+        self.randSeedB.grid(row=1, rowspan=2, column=1)
+        self.normalSeedB.grid(row=3, rowspan=2, column=1)
         
         self.canvas.grid(row=0, columnspan=17)
         self.ruleEnt.grid(row=1, rowspan=2)
@@ -102,7 +109,16 @@ class Automaton():
         self.lines = []
         self.generate_lines()
         self.draw()
-    
+
+    def rand_seed(self):
+        """Random values for the first row instead of a single cell on center"""
+        self.line = ''.join(r.choice('01') for _ in range(self.size+1))
+        self.change_rule()
+
+    def normal_seed(self):
+        self.line = '0' * (self.size // 2) + '1' + '0' * (self.size // 2)
+        self.change_rule()
+
     def draw(self):
         """Draw"""
         self.canvas.delete(tk.ALL)
